@@ -12,7 +12,7 @@ export function toConcatenatedStrings(literal: string, quota: string): string {
 }
 
 function isTemplateLiteral(literal: string): void {
-    if (!literal || literal.length < 3 || literal.charAt(0) !== literal.charAt(literal.length - 1) || literal.charAt(0) !== '`') {
+    if (!literal || literal.length < 2 || literal.charAt(0) !== literal.charAt(literal.length - 1) || literal.charAt(0) !== '`') {
         throw new IncorrectInputError('Not a valid literal');
     }
 }
@@ -27,13 +27,16 @@ function convertSingleLine(line: string, quota: string): string {
 
 function convertMultipleLines(raw: string, quota: string, lineBreak: string): string {
     const LINE_BREAK_CHARACTERS = lineBreak === '\n' ? '\\n' : '\\r\\n';
-    return raw
+    const LINE_BREAK_CHARACTERS_REG = lineBreak === '\n' ? '\\\\n' : '\\\\r\\\\n';
+    const newLine = raw
         .split(lineBreak)
         .join(LINE_BREAK_CHARACTERS)
         .replace(new RegExp(quota, 'g'), getQuotaReplacer(quota))
         .replace(/\$\{.+?\}/g, getVariableReplacer(quota))
         .replace(/`/g, quota)
-        .replace(new RegExp('\\s\\+\\s' + quota + quota + '$'), '');
+        .replace(new RegExp('\\s\\+\\s' + quota + quota + '$'), '')
+        .replace(new RegExp(LINE_BREAK_CHARACTERS_REG, 'g'), LINE_BREAK_CHARACTERS + '\' +' + lineBreak + '\'');
+    return newLine;
 }
 
 

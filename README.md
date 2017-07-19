@@ -18,6 +18,7 @@ npm i string-transformer
 ## Usage
 
 ```typescript
+//convert ES2015 template literals into concatenated strings
 import { toConcatenatedStrings } from 'string-transformer';
 
 const es6string = '`test1${name}to${age}`';

@@ -91,7 +91,7 @@ describe('transform', function () {
             abc\``;
             const result = toConcatenatedStrings(es6string, '\'');
 
-            should(result).be.exactly('\'test\\n            abc\'');
+            should(result).be.exactly('\'test\\n\' +\n\'            abc\'');
         });
 
         it('single quota: with variable in it', function () {
@@ -100,7 +100,7 @@ describe('transform', function () {
             $\{name\}\``;
             const result = toConcatenatedStrings(es6string, '\'');
 
-            should(result).be.exactly('\'test\\n            \' + name');
+            should(result).be.exactly('\'test\\n\' +\n\'            \' + name');
         });
 
         it('single quota: with variables in it', function () {
@@ -110,7 +110,7 @@ describe('transform', function () {
             know\``;
             const result = toConcatenatedStrings(es6string, '\'');
 
-            should(result).be.exactly('\'your name\\n            is \' + name + \', but i do not \\n            know\'');
+            should(result).be.exactly('\'your name\\n\' +\n\'            is \' + name + \', but i do not \\n\' +\n\'            know\'');
         });
     });
 });
