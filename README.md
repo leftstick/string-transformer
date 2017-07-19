@@ -1,5 +1,4 @@
 string-transformer
-
 ================
 
 [![NPM version][npm-image]][npm-url]
@@ -10,7 +9,22 @@ string-transformer
 
 A module helps you transform an ES2016 template literals into concatenated strings, or reverse it back
 
+## Install
 
+```bash
+npm i string-transformer
+```
+
+## Usage
+
+```typescript
+import { toConcatenatedStrings } from 'string-transformer';
+
+const es6string = '`test1${name}to${age}`';
+const result = toConcatenatedStrings(es6string, '\'');
+
+console.log('\'test1\' + name + \'to\' + age' === result);
+```
 
 
 
