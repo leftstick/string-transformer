@@ -1,0 +1,38 @@
+{
+  "name": "string-transformer",
+  "version": "1.0.0",
+  "description": "A module helps you transform an ES2016 template literals into concatenated strings, or reverse it back",
+  "main": "out/src/index.js",
+  "types": "out/src/index.d.ts",
+  "files": [
+    "out/src"
+  ],
+  "scripts": {
+    "prepublish": "rm -rf ./out && tsc -p ./",
+    "pretest": "rm -rf ./out && tsc -p ./",
+    "test": "mocha out/test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leftstick/string-transformer.git"
+  },
+  "keywords": [
+    "string",
+    "transformer"
+  ],
+  "author": "Howard.Zuo",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/leftstick/string-transformer/issues"
+  },
+  "homepage": "https://github.com/leftstick/string-transformer#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^8.0.14",
+    "@types/should": "^8.3.0",
+    "mocha": "^3.4.2",
+    "should": "^11.2.1",
+    "typescript": "^2.4.1"
+  }
+}
