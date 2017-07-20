@@ -10,6 +10,13 @@ describe('5to6, transform', function () {
             func.should.throw();
         });
 
+        it('single quota: incorrect format, es6 string', function () {
+
+            const es5string = '`te\'st1`';
+            const func = toTemplateLiteral.bind(null, es5string);
+            func.should.throw();
+        });
+
         it('single quota: incorrect format, quote in variable', function () {
 
             const es5string = '\'test1\' + na\'me + \' ok\'';
@@ -47,6 +54,13 @@ describe('5to6, transform', function () {
             const es5string = '\'test1\\n\' +\n+ \' ok\'';
             const result = toTemplateLiteral(es5string);
             should(result).be.exactly('`test1\n ok`');
+        });
+
+        it('single quota: without variable, with linebreak', function () {
+
+            const es5string = '\'your name \\n\' +\n\'is \' + name + \', but \\n\' +\n\'you are stupid\'';
+            const result = toTemplateLiteral(es5string);
+            should(result).be.exactly('`your name \nis ${name}, but \nyou are stupid`');
         });
 
 
