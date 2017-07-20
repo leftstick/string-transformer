@@ -9,6 +9,8 @@ string-transformer
 
 A module helps you transform an ES2016 template literals into concatenated strings, or reverse it back
 
+>an internal tool used by [vscode-string-transformer](https://github.com/leftstick/vscode-string-transformer)
+
 ## Install
 
 ```bash
