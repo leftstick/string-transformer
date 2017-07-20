@@ -27,6 +27,15 @@ const result = toConcatenatedStrings(es6string, '\'');
 console.log('\'test1\' + name + \'to\' + age' === result);
 ```
 
+```typescript
+//convert ES5 concatenated strings into template literals
+import { toTemplateLiteral } from 'string-transformer';
+
+const es5string = '\'test1\' + name + \' ok\'';
+const result = toTemplateLiteral(es5string, '\'');
+
+console.log('`test1${name} ok`' === result);
+```
 
 
 ## LICENSE ##

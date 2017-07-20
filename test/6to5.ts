@@ -1,7 +1,7 @@
 import * as should from 'should';
 import { toConcatenatedStrings } from '../src';
 
-describe('transform', function () {
+describe('6to5, transform', function () {
     describe('single line', function () {
         it('single quota: with redundant ` in it', function () {
 
