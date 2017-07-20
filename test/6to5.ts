@@ -3,6 +3,12 @@ import { toConcatenatedStrings } from '../src';
 
 describe('transform', function () {
     describe('single line', function () {
+        it('single quota: with redundant ` in it', function () {
+
+            const es6string = '`tes`t1`';
+            const func = toConcatenatedStrings.bind(null, es6string, '\'');
+            func.should.throw();
+        });
         it('single quota: without quota in it', function () {
 
             const es6string = '`test1`';
@@ -41,6 +47,22 @@ describe('transform', function () {
             const result = toConcatenatedStrings(es6string, '\'');
 
             should(result).be.exactly('\'test1\' + name + \'to\'');
+        });
+
+        it('single quota: with variable in front of the string', function () {
+
+            const es6string = '`${name}test1to`';
+            const result = toConcatenatedStrings(es6string, '\'');
+
+            should(result).be.exactly('name + \'test1to\'');
+        });
+
+        it('single quota: with variable bye the end of the string', function () {
+
+            const es6string = '`test1to${name}`';
+            const result = toConcatenatedStrings(es6string, '\'');
+
+            should(result).be.exactly('\'test1to\' + name');
         });
 
         it('single quota: with multiple variables in it', function () {
@@ -95,6 +117,24 @@ describe('transform', function () {
         });
 
         it('single quota: with variable in it', function () {
+
+            const es6string = `\`test
+            $\{name\}abc\``;
+            const result = toConcatenatedStrings(es6string, '\'');
+
+            should(result).be.exactly('\'test\\n\' +\n\'            \' + name + \'abc\'');
+        });
+
+        it('single quota: with variable in front of the string', function () {
+
+            const es6string = `\`$\{name\}
+            test\``;
+            const result = toConcatenatedStrings(es6string, '\'');
+
+            should(result).be.exactly('name + \'\\n\' +\n\'            test\'');
+        });
+
+        it('single quota: with variable by the end of the string', function () {
 
             const es6string = `\`test
             $\{name\}\``;

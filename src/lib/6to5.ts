@@ -15,28 +15,39 @@ function isTemplateLiteral(literal: string): void {
     if (!literal || literal.length < 2 || literal.charAt(0) !== literal.charAt(literal.length - 1) || literal.charAt(0) !== '`') {
         throw new IncorrectInputError('Not a valid literal');
     }
+    const content = literal.slice(1, -1);
+    if (content.includes('`') && !content.includes('\\`')) {
+        throw new IncorrectInputError('Not a valid literal, contains invalid [`]');
+    }
 }
 
 function convertSingleLine(line: string, quota: string): string {
-    const newLine = line
+    const content = line.slice(1, -1);
+    const newContent = content
         .replace(new RegExp(quota, 'g'), getQuotaReplacer(quota))
-        .replace(/\$\{.+?\}/g, getVariableReplacer(quota))
-        .replace(/`/g, quota);
-    return newLine.endsWith(' + \'\'') ? newLine.slice(0, -5) : newLine;
+        .replace(/\$\{.+?\}/g, getVariableReplacer(quota));
+
+    const newLine = `${quota}${newContent}${quota}`;
+
+    return newLine.replace(new RegExp('^' + quota + quota + '\\s\\+\\s'), '')
+        .replace(new RegExp('\\s\\+\\s' + quota + quota + '$'), '');
 }
 
 function convertMultipleLines(raw: string, quota: string, lineBreak: string): string {
     const LINE_BREAK_CHARACTERS = lineBreak === '\n' ? '\\n' : '\\r\\n';
     const LINE_BREAK_CHARACTERS_REG = lineBreak === '\n' ? '\\\\n' : '\\\\r\\\\n';
-    const newLine = raw
+    const content = raw
         .split(lineBreak)
         .join(LINE_BREAK_CHARACTERS)
-        .replace(new RegExp(quota, 'g'), getQuotaReplacer(quota))
-        .replace(/\$\{.+?\}/g, getVariableReplacer(quota))
-        .replace(/`/g, quota)
+        .slice(1, -1);
+    const newContent = content.replace(new RegExp(quota, 'g'), getQuotaReplacer(quota))
+        .replace(/\$\{.+?\}/g, getVariableReplacer(quota));
+
+    const newLine = `${quota}${newContent}${quota}`;
+
+    return newLine.replace(new RegExp('^' + quota + quota + '\\s\\+\\s'), '')
         .replace(new RegExp('\\s\\+\\s' + quota + quota + '$'), '')
         .replace(new RegExp(LINE_BREAK_CHARACTERS_REG, 'g'), LINE_BREAK_CHARACTERS + '\' +' + lineBreak + '\'');
-    return newLine;
 }
 
 
