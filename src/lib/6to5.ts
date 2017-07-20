@@ -25,7 +25,8 @@ function convertSingleLine(line: string, quota: string): string {
     const content = line.slice(1, -1);
     const newContent = content
         .replace(new RegExp(quota, 'g'), getQuotaReplacer(quota))
-        .replace(/\$\{.+?\}/g, getVariableReplacer(quota));
+        .replace(/\$\{.+?\}/g, getVariableReplacer(quota))
+        .replace(/\\\|~~~\|/g, quota);
 
     const newLine = `${quota}${newContent}${quota}`;
 
@@ -59,6 +60,6 @@ function getQuotaReplacer(quota: string): (substring: string, ...args: any[]) =>
 
 function getVariableReplacer(quota: string): (substring: string, ...args: any[]) => string {
     return function (match, offset) {
-        return quota + ' + ' + match.slice(2, -1) + ' + ' + quota;
+        return quota + ' + ' + match.slice(2, -1).replace(new RegExp(quota, 'g'), '|~~~|') + ' + ' + quota;
     };
 }

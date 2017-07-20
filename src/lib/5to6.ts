@@ -29,10 +29,7 @@ function findQuota(str: string): string {
 function convertSingleLine(line: string, quota: string): string {
     const snippets = line.split(/\s*\+\s*/);
     const content = snippets.reduce((p, c) => {
-        if (!c.startsWith(quota) && !c.endsWith(quota)) {
-            if (c.includes(quota) && !c.includes('\\' + quota)) {
-                throw new IncorrectInputError('not a valid concatenated string, [' + quota + '] can not be in variable');
-            }
+        if (!c.startsWith(quota) || !c.endsWith(quota)) {
             return p + '${' + c + '}';
         }
         if (c.startsWith(quota) && c.endsWith(quota)) {
@@ -63,10 +60,7 @@ function convertMultipleLines(raw: string, quota: string, lineBreak: string): st
         if (!cWithoutbreak) {
             return p + cWithoutbreak;
         }
-        if (!cWithoutbreak.startsWith(quota) && !cWithoutbreak.endsWith(quota)) {
-            if (cWithoutbreak.includes(quota) && !cWithoutbreak.includes('\\' + quota)) {
-                throw new IncorrectInputError('not a valid concatenated string, [' + quota + '] can not be in variable');
-            }
+        if (!cWithoutbreak.startsWith(quota) || !cWithoutbreak.endsWith(quota)) {
             return p + (c.startsWith(LINE_BREAK_CHARACTERS) ? LINE_BREAK_CHARACTERS : '') + '${' + cWithoutbreak + '}' + (c.endsWith(LINE_BREAK_CHARACTERS) ? LINE_BREAK_CHARACTERS : '');
         }
         if (cWithoutbreak.startsWith(quota) && cWithoutbreak.endsWith(quota)) {
@@ -88,9 +82,3 @@ function convertMultipleLines(raw: string, quota: string, lineBreak: string): st
     return '`' + newContent + '`';
 }
 
-
-function getVariableReplacer(quota: string): (substring: string, ...args: any[]) => string {
-    return function (match, offset) {
-        return quota + ' + ' + match.slice(2, -1) + ' + ' + quota;
-    };
-}

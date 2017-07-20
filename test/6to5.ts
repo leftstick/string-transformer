@@ -9,6 +9,7 @@ describe('6to5, transform', function () {
             const func = toConcatenatedStrings.bind(null, es6string, '\'');
             func.should.throw();
         });
+
         it('single quota: without quota in it', function () {
 
             const es6string = '`test1`';
@@ -47,6 +48,14 @@ describe('6to5, transform', function () {
             const result = toConcatenatedStrings(es6string, '\'');
 
             should(result).be.exactly('\'test1\' + name + \'to\'');
+        });
+
+        it('single quota: with expression in it', function () {
+
+            const es6string = '`<div><table><tr class="${hideExperience}"><td class="f2 ${centerExp}">${data.experience > 0 ? data.experience : \'—\'}</td></div>`';
+            const result = toConcatenatedStrings(es6string, '\'');
+
+            should(result).be.exactly('\'<div><table><tr class="\' + hideExperience + \'"><td class="f2 \' + centerExp + \'">\' + data.experience > 0 ? data.experience : \'—\' + \'</td></div>\'');
         });
 
         it('single quota: with variable in front of the string', function () {
