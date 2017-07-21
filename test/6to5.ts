@@ -55,7 +55,7 @@ describe('6to5, transform', function () {
             const es6string = '`<div><table><tr class="${hideExperience}"><td class="f2 ${centerExp}">${data.experience > 0 ? data.experience : \'—\'}</td></div>`';
             const result = toConcatenatedStrings(es6string, '\'');
 
-            should(result).be.exactly('\'<div><table><tr class="\' + hideExperience + \'"><td class="f2 \' + centerExp + \'">\' + data.experience > 0 ? data.experience : \'—\' + \'</td></div>\'');
+            should(result).be.exactly('\'<div><table><tr class="\' + hideExperience + \'"><td class="f2 \' + centerExp + \'">\' + (data.experience > 0 ? data.experience : \'—\') + \'</td></div>\'');
         });
 
         it('single quota: with variable in front of the string', function () {
