@@ -8,7 +8,7 @@
     "out/src"
   ],
   "scripts": {
-    "prepublish": "rm -rf ./out && tsc -p ./",
+    "prepare": "rm -rf ./out && tsc -p ./",
     "pretest": "rm -rf ./out && tsc -p ./",
     "test": "mocha out/test/**/*.js"
   },

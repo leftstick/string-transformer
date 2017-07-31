@@ -1,4 +1,3 @@
-import * as jsep from 'jsep';
 import { IncorrectInputError } from '../error';
 import { getLineBreak } from '../helper';
 
